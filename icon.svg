@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" rx="220" fill="#0a1628"/>
+  <circle cx="512" cy="460" r="200" fill="none" stroke="#2ec4b6" stroke-width="14" opacity="0.25"/>
+  <circle cx="512" cy="460" r="145" fill="none" stroke="#2ec4b6" stroke-width="14" opacity="0.45"/>
+  <circle cx="512" cy="460" r="90" fill="#1a7a6e" opacity="0.9"/>
+  <circle cx="512" cy="460" r="50" fill="#2ec4b6"/>
+  <text x="512" y="720" text-anchor="middle" font-family="Georgia,serif" font-size="80" font-weight="300" fill="#e8f4f2" letter-spacing="4">Cohérence</text>
+  <text x="512" y="810" text-anchor="middle" font-family="Georgia,serif" font-size="64" fill="#e8c97a" letter-spacing="10">365</text>
+</svg>
