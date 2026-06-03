@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cohérence 365</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cohérence">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a1628">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxyZWN0IHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIHJ4PSIyMjAiIGZpbGw9IiMwYTE2MjgiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjE4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmVjNGI2IiBzdHJva2Utd2lkdGg9IjEyIiBvcGFjaXR5PSIwLjMiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjEzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmVjNGI2IiBzdHJva2Utd2lkdGg9IjEyIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjgwIiBmaWxsPSIjMWE3YTZlIiBvcGFjaXR5PSIwLjkiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjQ1IiBmaWxsPSIjMmVjNGI2Ii8+PHRleHQgeD0iNTEyIiB5PSI3MjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSI4OCIgZm9udC13ZWlnaHQ9IjMwMCIgZmlsbD0iI2U4ZjRmMiIgbGV0dGVyLXNwYWNpbmc9IjQiPkNvaMOpcmVuY2U8L3RleHQ+PHRleHQgeD0iNTEyIiB5PSI4MTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSI2MCIgZmlsbD0iI2U4Yzk3YSIgbGV0dGVyLXNwYWNpbmc9IjgiPjM2NTwvdGV4dD48L3N2Zz4=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0a1628;
+    --ocean: #0d2b45;
+    --teal: #1a7a6e;
+    --aqua: #2ec4b6;
+    --foam: #a8e6df;
+    --mist: #d4f1ee;
+    --gold: #e8c97a;
+    --text: #e8f4f2;
+    --subtext: #7fb8b2;
+    --inhale: 4s;
+    --exhale: 6s;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* OCEAN BACKGROUND */
+  .ocean-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 20% 80%, #0d3b5e 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, #0a2d40 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, #0d2b45 0%, #060f1a 100%);
+  }
+  .wave {
+    position: fixed; bottom: 0; left: -50%; width: 200%; height: 120px;
+    background: linear-gradient(180deg, transparent 0%, rgba(26,122,110,0.08) 100%);
+    border-radius: 50%;
+    animation: waveAnim 8s ease-in-out infinite;
+  }
+  .wave:nth-child(2) { height: 80px; animation-delay: -3s; animation-duration: 11s; opacity: 0.5; }
+  .wave:nth-child(3) { height: 60px; animation-delay: -6s; animation-duration: 14s; opacity: 0.3; }
+  @keyframes waveAnim {
+    0%,100% { transform: translateX(0) translateY(0); }
+    50% { transform: translateX(-25%) translateY(-8px); }
+  }
+
+  /* PARTICLES */
+  .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .particle {
+    position: absolute; width: 2px; height: 2px;
+    background: var(--aqua); border-radius: 50%; opacity: 0;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0% { opacity: 0; transform: translateY(100vh) scale(0); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.2; }
+    100% { opacity: 0; transform: translateY(-20px) scale(1); }
+  }
+
+  /* LAYOUT */
+  #app { position: relative; z-index: 1; }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 0;
+  }
+  .logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; letter-spacing: 2px; color: var(--aqua); }
+  .logo span { color: var(--gold); font-style: italic; }
+  .nav-icons { display: flex; gap: 16px; }
+  .nav-icon { background: none; border: none; color: var(--subtext); font-size: 20px; cursor: pointer; padding: 4px; transition: color 0.3s; }
+  .nav-icon:hover, .nav-icon.active-nav { color: var(--aqua); }
+
+  /* HOME SCREEN */
+  .home-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 32px; }
+
+  .greeting { text-align: center; }
+  .greeting-sub { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--subtext); margin-bottom: 8px; }
+  .greeting-main { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--text); }
+  .greeting-main em { color: var(--aqua); font-style: italic; }
+
+  /* STREAK */
+  .streak-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.15);
+    border-radius: 20px; padding: 20px 32px; text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .streak-number { font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; color: var(--aqua); line-height: 1; }
+  .streak-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--subtext); margin-top: 4px; }
+  .streak-fire { font-size: 20px; margin-bottom: 4px; }
+
+  /* TODAY SESSIONS */
+  .today-sessions { width: 100%; }
+  .today-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--subtext); margin-bottom: 12px; text-align: center; }
+  .sessions-row { display: flex; gap: 12px; justify-content: center; }
+  .session-dot {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.1);
+    border-radius: 16px; padding: 14px 20px; cursor: pointer;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .session-dot.done {
+    background: rgba(46,196,182,0.12); border-color: rgba(46,196,182,0.4);
+  }
+  .session-dot:hover { transform: translateY(-2px); border-color: rgba(46,196,182,0.3); }
+  .session-time { font-size: 13px; font-weight: 500; color: var(--text); }
+  .session-icon { font-size: 18px; }
+  .session-check { position: absolute; top: 6px; right: 8px; font-size: 10px; color: var(--aqua); }
+
+  /* MOTIVATIONAL */
+  .motivational {
+    text-align: center; padding: 0 16px;
+    font-family: 'Cormorant Garamond', serif; font-size: 18px;
+    font-style: italic; color: var(--subtext); line-height: 1.6;
+  }
+
+  /* START BUTTON */
+  .start-btn {
+    background: linear-gradient(135deg, var(--teal), var(--aqua));
+    border: none; border-radius: 50px; padding: 18px 48px;
+    color: var(--deep); font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(46,196,182,0.3);
+  }
+  .start-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(46,196,182,0.4); }
+  .start-btn:active { transform: scale(0.97); }
+
+  /* ===== EXERCISE SCREEN ===== */
+  .exercise-header { padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
+  .back-btn { background: none; border: none; color: var(--subtext); font-size: 20px; cursor: pointer; }
+  .exercise-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--text); }
+
+  .visual-selector { display: flex; gap: 10px; padding: 0 24px 16px; overflow-x: auto; scrollbar-width: none; }
+  .visual-selector::-webkit-scrollbar { display: none; }
+  .visual-opt {
+    flex-shrink: 0; background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.15);
+    border-radius: 12px; padding: 10px 16px; cursor: pointer;
+    font-size: 12px; color: var(--subtext); transition: all 0.3s; white-space: nowrap;
+  }
+  .visual-opt.selected { background: rgba(46,196,182,0.15); border-color: var(--aqua); color: var(--aqua); }
+
+  .exercise-arena {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 20px; gap: 24px;
+    position: relative;
+  }
+
+  .phase-label {
+    font-family: 'Cormorant Garamond', serif; font-size: 32px;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--aqua); transition: all 0.5s;
+    text-align: center;
+  }
+  .phase-sublabel { font-size: 13px; color: var(--subtext); letter-spacing: 1px; text-align: center; margin-top: -16px; }
+
+  /* VISUAL 1: ORBE */
+  #visual-orb { display: flex; align-items: center; justify-content: center; width: 220px; height: 220px; }
+  .orb {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--foam), var(--teal));
+    box-shadow: 0 0 40px rgba(46,196,182,0.4), 0 0 80px rgba(46,196,182,0.15);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .orb::after {
+    content: ''; position: absolute; inset: -12px; border-radius: 50%;
+    border: 1px solid rgba(46,196,182,0.3);
+    animation: orbRing 4s ease-in-out infinite;
+  }
+  @keyframes orbRing { 0%,100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0; } }
+  .orb.inhaling { width: 180px; height: 180px; box-shadow: 0 0 60px rgba(46,196,182,0.6), 0 0 120px rgba(46,196,182,0.25); }
+  .orb.exhaling { width: 80px; height: 80px; box-shadow: 0 0 20px rgba(46,196,182,0.3); }
+
+  /* VISUAL 2: BILLE */
+  #visual-ball { width: 80px; height: 280px; position: relative; }
+  .ball-track {
+    width: 4px; height: 100%; background: rgba(46,196,182,0.1);
+    border-radius: 2px; margin: 0 auto; position: relative;
+  }
+  .ball-bead {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--foam), var(--aqua));
+    box-shadow: 0 0 16px rgba(46,196,182,0.6);
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: 0; transition: bottom 4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ball-bead.at-top { bottom: calc(100% - 28px); }
+  .ball-label-top { position: absolute; top: 0; right: -50px; font-size: 10px; color: var(--subtext); letter-spacing: 1px; }
+  .ball-label-bot { position: absolute; bottom: 0; right: -50px; font-size: 10px; color: var(--subtext); letter-spacing: 1px; }
+
+  /* VISUAL 3: VAGUE */
+  #visual-wave { width: 240px; height: 120px; }
+  #visual-wave svg { width: 100%; height: 100%; }
+
+  /* VISUAL 4: CERCLES */
+  #visual-circles { width: 220px; height: 220px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .circle-ring {
+    position: absolute; border-radius: 50%; border: 1px solid rgba(46,196,182,0.3);
+    transition: all 0.3s ease;
+  }
+  .circle-ring.r1 { width: 60px; height: 60px; background: rgba(46,196,182,0.2); }
+  .circle-ring.r2 { width: 100px; height: 100px; }
+  .circle-ring.r3 { width: 140px; height: 140px; }
+  .circle-ring.r4 { width: 180px; height: 180px; }
+  .circle-ring.expand { transform: scale(1.4); opacity: 0.7; }
+  .circle-ring.contract { transform: scale(0.7); opacity: 0.4; }
+
+  /* VISUAL 5: ARC-EN-CIEL */
+  #visual-arc { width: 240px; height: 120px; position: relative; overflow: hidden; }
+  #visual-arc canvas { width: 100%; height: 100%; }
+
+  /* PROGRESS RING */
+  .progress-ring-wrap { position: relative; width: 260px; height: 260px; }
+  .progress-ring { position: absolute; inset: 0; }
+  .progress-ring circle { fill: none; stroke-width: 3; }
+  .progress-ring .track { stroke: rgba(46,196,182,0.1); }
+  .progress-ring .fill {
+    stroke: var(--aqua); stroke-linecap: round;
+    transform: rotate(-90deg); transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.5s linear;
+  }
+  .inner-visual { position: absolute; inset: 20px; display: flex; align-items: center; justify-content: center; }
+
+  /* TIMER */
+  .session-timer { text-align: center; }
+  .timer-count { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300; color: var(--text); line-height: 1; }
+  .timer-sub { font-size: 11px; color: var(--subtext); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+  /* SOUND TOGGLE */
+  .sound-toggle {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.15);
+    border-radius: 12px; padding: 10px 20px; cursor: pointer;
+    font-size: 13px; color: var(--subtext); display: flex; align-items: center; gap: 8px;
+    transition: all 0.3s;
+  }
+  .sound-toggle.on { border-color: rgba(46,196,182,0.4); color: var(--aqua); }
+
+  .pause-btn {
+    background: rgba(46,196,182,0.1); border: 1px solid rgba(46,196,182,0.3);
+    border-radius: 50px; padding: 14px 36px; color: var(--aqua);
+    font-size: 14px; cursor: pointer; transition: all 0.3s;
+  }
+  .pause-btn:hover { background: rgba(46,196,182,0.2); }
+
+  /* COMPLETE SCREEN */
+  .complete-content {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 32px; gap: 24px; text-align: center;
+  }
+  .complete-icon { font-size: 64px; animation: bounce 0.6s ease; }
+  @keyframes bounce { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+  .complete-title { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--aqua); }
+  .complete-msg { font-size: 16px; color: var(--subtext); line-height: 1.7; max-width: 300px; }
+  .complete-xp { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); }
+
+  /* STATS SCREEN */
+  .stats-content { flex: 1; padding: 24px; overflow-y: auto; }
+  .stats-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; margin-bottom: 24px; color: var(--text); }
+  .period-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+  .period-tab {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.1);
+    border-radius: 8px; padding: 8px 16px; cursor: pointer;
+    font-size: 12px; color: var(--subtext); transition: all 0.3s;
+  }
+  .period-tab.active { background: rgba(46,196,182,0.15); border-color: var(--aqua); color: var(--aqua); }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .stat-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.1);
+    border-radius: 16px; padding: 16px; text-align: center;
+  }
+  .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--aqua); }
+  .stat-label { font-size: 10px; color: var(--subtext); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 12px; }
+  .cal-day-label { font-size: 9px; color: var(--subtext); text-align: center; text-transform: uppercase; }
+  .cal-cell {
+    aspect-ratio: 1; border-radius: 6px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    position: relative; cursor: default;
+  }
+  .cal-cell.has-1 { background: rgba(46,196,182,0.15); border-color: rgba(46,196,182,0.2); }
+  .cal-cell.has-2 { background: rgba(46,196,182,0.30); border-color: rgba(46,196,182,0.35); }
+  .cal-cell.has-3 { background: rgba(46,196,182,0.5); border-color: rgba(46,196,182,0.6); }
+  .cal-cell.today { border-color: var(--gold) !important; box-shadow: 0 0 8px rgba(232,201,122,0.3); }
+  .cal-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--deep); }
+
+  /* SETTINGS */
+  .settings-content { flex: 1; padding: 24px; overflow-y: auto; }
+  .settings-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; margin-bottom: 24px; }
+  .settings-section { margin-bottom: 28px; }
+  .settings-section-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--subtext); margin-bottom: 12px; }
+  .settings-item {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.1);
+    border-radius: 14px; padding: 16px; display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 8px;
+  }
+  .settings-item-label { font-size: 14px; color: var(--text); }
+  .settings-item-sub { font-size: 11px; color: var(--subtext); margin-top: 2px; }
+  .sound-mode-btn {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.12);
+    border-radius: 14px; padding: 14px 16px; cursor: pointer; text-align: left;
+    transition: all 0.25s; font-family: 'DM Sans', sans-serif; width: 100%;
+  }
+  .sound-mode-btn.selected {
+    background: rgba(46,196,182,0.12); border-color: rgba(46,196,182,0.5);
+  }
+  .snd-icon { font-size: 22px; flex-shrink: 0; width: 28px; text-align: center; }
+  .snd-info { flex: 1; }
+  .snd-name { font-size: 13px; color: var(--text); font-weight: 500; }
+  .snd-desc { font-size: 11px; color: var(--subtext); margin-top: 2px; line-height: 1.4; }
+  .snd-check { font-size: 14px; color: var(--aqua); width: 16px; flex-shrink: 0; }
+
+  .rhythm-btn {
+    flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.12);
+    border-radius: 14px; padding: 12px 8px; cursor: pointer; color: var(--subtext);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    transition: all 0.25s; font-family: 'DM Sans', sans-serif;
+  }
+  .rhythm-btn.selected {
+    background: rgba(46,196,182,0.15); border-color: var(--aqua); color: var(--aqua);
+    box-shadow: 0 0 16px rgba(46,196,182,0.15);
+  }
+  .rhythm-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; line-height: 1; }
+  .rhythm-sep { font-size: 16px; opacity: 0.4; line-height: 1; }
+  .rhythm-tag { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  .toggle {
+    width: 48px; height: 28px; border-radius: 14px; border: none;
+    background: rgba(46,196,182,0.15); cursor: pointer; position: relative; transition: all 0.3s;
+  }
+  .toggle.on { background: var(--teal); }
+  .toggle::after {
+    content: ''; position: absolute; width: 20px; height: 20px; border-radius: 50%;
+    background: white; top: 4px; left: 4px; transition: all 0.3s;
+  }
+  .toggle.on::after { left: 24px; }
+
+  .time-input {
+    background: rgba(46,196,182,0.1); border: 1px solid rgba(46,196,182,0.2);
+    border-radius: 8px; padding: 6px 12px; color: var(--aqua);
+    font-size: 14px; font-family: 'DM Sans', sans-serif; cursor: pointer;
+  }
+
+  /* NOTIFICATION BANNER */
+  .notif-banner {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+    background: linear-gradient(135deg, var(--ocean), var(--teal));
+    border: 1px solid rgba(46,196,182,0.4); border-radius: 16px;
+    padding: 14px 24px; min-width: 280px; text-align: center;
+    z-index: 100; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .notif-banner.show { transform: translateX(-50%) translateY(0); }
+  .notif-title { font-size: 14px; font-weight: 500; color: var(--aqua); margin-bottom: 2px; }
+  .notif-body { font-size: 12px; color: var(--subtext); }
+
+  /* BOTTOM TABS */
+  .bottom-tabs {
+    display: flex; border-top: 1px solid rgba(46,196,182,0.08);
+    background: rgba(6,15,26,0.8); backdrop-filter: blur(20px);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tab-btn {
+    flex: 1; background: none; border: none; padding: 12px 4px 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    cursor: pointer; color: var(--subtext); transition: color 0.3s;
+    font-size: 10px; letter-spacing: 0.5px;
+  }
+  .tab-btn.active { color: var(--aqua); }
+  .tab-btn svg { width: 22px; height: 22px; }
+
+  /* ANIMATIONS */
+  .fade-in { animation: fadeIn 0.6s ease forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .confetti-piece {
+    position: fixed; width: 8px; height: 8px; border-radius: 2px;
+    animation: confettiFall 2s ease-in forwards;
+    pointer-events: none; z-index: 200;
+  }
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(-20px) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="ocean-bg"></div>
+<div class="particles" id="particles"></div>
+<div class="wave"></div>
+<div class="wave"></div>
+<div class="wave"></div>
+
+<div class="notif-banner" id="notifBanner">
+  <div class="notif-title">🌊 Moment de respirer</div>
+  <div class="notif-body" id="notifBody">Ta séance de cohérence t'attend</div>
+</div>
+
+<div id="app">
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <nav>
+      <div class="logo">Cohér<span>ence</span></div>
+      <div class="nav-icons">
+        <button class="nav-icon" onclick="showNotif()">🔔</button>
+      </div>
+    </nav>
+    <div class="home-content fade-in">
+      <div class="greeting">
+        <div class="greeting-sub" id="greetingSub">Bienvenue, Greg</div>
+        <div class="greeting-main" id="greetingMain">Prends soin de <em>toi</em></div>
+      </div>
+
+      <div class="streak-card">
+        <div class="streak-fire" id="streakFire">🌊</div>
+        <div class="streak-number" id="streakCount">0</div>
+        <div class="streak-label">jours consécutifs</div>
+      </div>
+
+      <div class="today-sessions">
+        <div class="today-title">Aujourd'hui</div>
+        <div class="sessions-row">
+          <div class="session-dot" id="sess-0" onclick="startSession(0)">
+            <span class="session-icon">🌅</span>
+            <span class="session-time">08:00</span>
+            <span class="session-check" id="check-0"></span>
+          </div>
+          <div class="session-dot" id="sess-1" onclick="startSession(1)">
+            <span class="session-icon">☀️</span>
+            <span class="session-time">12:00</span>
+            <span class="session-check" id="check-1"></span>
+          </div>
+          <div class="session-dot" id="sess-2" onclick="startSession(2)">
+            <span class="session-icon">🌙</span>
+            <span class="session-time">18:00</span>
+            <span class="session-check" id="check-2"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="motivational" id="motivational">"Chaque souffle est un nouveau départ."</div>
+
+      <button class="start-btn" onclick="goToExercise()">✦ Commencer maintenant</button>
+    </div>
+
+    <div class="bottom-tabs">
+      <button class="tab-btn active" onclick="showScreen('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg>
+        Accueil
+      </button>
+      <button class="tab-btn" onclick="showScreen('stats')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg>
+        Suivi
+      </button>
+      <button class="tab-btn" onclick="showScreen('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Réglages
+      </button>
+    </div>
+  </div>
+
+  <!-- EXERCISE -->
+  <div class="screen" id="screen-exercise">
+    <div class="exercise-header">
+    <button class="back-btn" onclick="stopAllSounds();showScreen('home')">←</button>
+      <div class="exercise-title">Cohérence cardiaque · 5 min</div>
+    </div>
+
+    <div class="visual-selector">
+      <div class="visual-opt selected" onclick="selectVisual(0,this)">🔵 Orbe</div>
+      <div class="visual-opt" onclick="selectVisual(1,this)">⚪ Bille</div>
+      <div class="visual-opt" onclick="selectVisual(2,this)">〰️ Vague</div>
+      <div class="visual-opt" onclick="selectVisual(3,this)">⭕ Cercles</div>
+      <div class="visual-opt" onclick="selectVisual(4,this)">🌈 Arc</div>
+    </div>
+
+    <div class="exercise-arena">
+      <div class="phase-label" id="phaseLabel">Prêt ?</div>
+      <div class="phase-sublabel" id="phaseSub">Clique pour commencer</div>
+
+      <div class="progress-ring-wrap" id="progressWrap">
+        <svg class="progress-ring" viewBox="0 0 260 260">
+          <circle class="track" cx="130" cy="130" r="120"/>
+          <circle class="fill" id="progressFill" cx="130" cy="130" r="120"
+            stroke-dasharray="753.98" stroke-dashoffset="753.98"/>
+        </svg>
+        <div class="inner-visual">
+          <!-- Visual 0: Orbe -->
+          <div id="visual-orb"><div class="orb" id="mainOrb"></div></div>
+          <!-- Visual 1: Bille -->
+          <div id="visual-ball" style="display:none">
+            <span class="ball-label-top">Exp.</span>
+            <div class="ball-track"><div class="ball-bead" id="ballBead"></div></div>
+            <span class="ball-label-bot">Insp.</span>
+          </div>
+          <!-- Visual 2: Vague -->
+          <div id="visual-wave" style="display:none">
+            <svg viewBox="0 0 240 120" id="waveSvg">
+              <path id="wavePath" d="M0,60 Q60,30 120,60 Q180,90 240,60" fill="none" stroke="#2ec4b6" stroke-width="3"/>
+            </svg>
+          </div>
+          <!-- Visual 3: Cercles -->
+          <div id="visual-circles" style="display:none">
+            <div class="circle-ring r4"></div>
+            <div class="circle-ring r3"></div>
+            <div class="circle-ring r2"></div>
+            <div class="circle-ring r1"></div>
+          </div>
+          <!-- Visual 4: Arc -->
+          <div id="visual-arc" style="display:none">
+            <canvas id="arcCanvas" width="240" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="session-timer" id="sessionTimer" style="display:none">
+        <div class="timer-count" id="timerCount">5:00</div>
+        <div class="timer-sub">restantes</div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;">
+        <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔇 Son guidé</button>
+        <button class="pause-btn" id="startPauseBtn" onclick="toggleExercise()">▶ Démarrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="screen" id="screen-complete">
+    <div class="complete-content fade-in">
+      <div class="complete-icon">🌊</div>
+      <div class="complete-title">Magnifique !</div>
+      <div class="complete-msg" id="completeMsg">Tu viens d'offrir 5 minutes précieuses à ton cœur et à ton esprit. Cette constance, c'est déjà une victoire.</div>
+      <div class="complete-xp" id="completeXp">✦ Séance 1/3 aujourd'hui</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+        <button class="start-btn" onclick="showScreen('home')" style="padding:14px 32px;font-size:14px;">Retour</button>
+        <button class="pause-btn" onclick="goToExercise()">Encore une séance</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="screen" id="screen-stats">
+    <nav><div class="logo">Cohér<span>ence</span></div></nav>
+    <div class="stats-content fade-in">
+      <div class="stats-title">Mon suivi</div>
+      <div class="period-tabs">
+        <div class="period-tab active" onclick="setPeriod('day',this)">Jour</div>
+        <div class="period-tab" onclick="setPeriod('week',this)">Semaine</div>
+        <div class="period-tab" onclick="setPeriod('month',this)">Mois</div>
+        <div class="period-tab" onclick="setPeriod('year',this)">Année</div>
+      </div>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div style="margin-bottom:12px;">
+        <div class="today-title" style="text-align:left;margin-bottom:12px;">Calendrier du mois</div>
+        <div class="calendar-grid" id="calGrid"></div>
+      </div>
+      <div class="motivational" style="font-size:15px;" id="statsMotiv">"La régularité est la clé."</div>
+    </div>
+    <div class="bottom-tabs">
+      <button class="tab-btn" onclick="showScreen('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg>
+        Accueil
+      </button>
+      <button class="tab-btn active" onclick="showScreen('stats')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg>
+        Suivi
+      </button>
+      <button class="tab-btn" onclick="showScreen('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Réglages
+      </button>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="screen" id="screen-settings">
+    <nav><div class="logo">Cohér<span>ence</span></div></nav>
+    <div class="settings-content fade-in">
+      <div class="settings-title">Réglages</div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Profil</div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">👤 Prénom affiché</div>
+            <div class="settings-item-sub">Personnalise l'accueil</div>
+          </div>
+          <input type="text" class="time-input" id="userNameInput" value="Greg" maxlength="20"
+            style="width:110px;text-align:right;" oninput="saveName()" placeholder="Ton prénom">
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Son de guidage</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="soundModeSelector">
+
+          <button class="sound-mode-btn selected" onclick="setSoundMode('tones',this)">
+            <span class="snd-icon">〰️</span>
+            <div class="snd-info">
+              <div class="snd-name">Tons sinusoïdaux</div>
+              <div class="snd-desc">Grave à l'expiration, aigu à l'inspiration</div>
+            </div>
+            <span class="snd-check" id="snd-check-tones">✓</span>
+          </button>
+
+          <button class="sound-mode-btn" onclick="setSoundMode('cardiac',this)">
+            <span class="snd-icon">❤️</span>
+            <div class="snd-info">
+              <div class="snd-name">Battement cardiaque</div>
+              <div class="snd-desc">Son ultime du cœur · style Patrick Drouot</div>
+            </div>
+            <span class="snd-check" id="snd-check-cardiac"></span>
+          </button>
+
+          <button class="sound-mode-btn" onclick="setSoundMode('binaural',this)">
+            <span class="snd-icon">🧠</span>
+            <div class="snd-info">
+              <div class="snd-name">Ondes binaurales</div>
+              <div class="snd-desc">Fréquences alpha · 10 Hz · avec écouteurs</div>
+            </div>
+            <span class="snd-check" id="snd-check-binaural"></span>
+          </button>
+
+          <button class="sound-mode-btn" onclick="setSoundMode('ocean',this)">
+            <span class="snd-icon">🌊</span>
+            <div class="snd-info">
+              <div class="snd-name">Vague océane</div>
+              <div class="snd-desc">Bruit rose rythmé sur ta respiration</div>
+            </div>
+            <span class="snd-check" id="snd-check-ocean"></span>
+          </button>
+
+          <button class="sound-mode-btn" onclick="setSoundMode('upload',this)">
+            <span class="snd-icon">📁</span>
+            <div class="snd-info">
+              <div class="snd-name">Importer un son</div>
+              <div class="snd-desc">Ta piste Drouot ou autre fichier audio</div>
+            </div>
+            <span class="snd-check" id="snd-check-upload"></span>
+          </button>
+        </div>
+
+        <div id="uploadZone" style="display:none;margin-top:10px;">
+          <label style="display:flex;align-items:center;gap:12px;background:rgba(46,196,182,0.06);border:1px dashed rgba(46,196,182,0.3);border-radius:12px;padding:14px 16px;cursor:pointer;">
+            <span style="font-size:24px;">🎵</span>
+            <div>
+              <div style="font-size:13px;color:var(--aqua);">Choisir un fichier audio</div>
+              <div style="font-size:11px;color:var(--subtext);margin-top:2px;" id="uploadFileName">MP3, WAV, M4A acceptés</div>
+            </div>
+            <input type="file" accept="audio/*" id="audioFileInput" style="display:none" onchange="loadAudioFile(this)">
+          </label>
+        </div>
+        <div id="previewZone" style="display:none;margin-top:8px;text-align:center;">
+          <button onclick="previewSound()" style="background:rgba(46,196,182,0.1);border:1px solid rgba(46,196,182,0.3);border-radius:8px;padding:8px 20px;color:var(--aqua);cursor:pointer;font-size:13px;">▶ Tester le son</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Rappels quotidiens</div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">🌅 Matin</div>
+            <div class="settings-item-sub">Première séance</div>
+          </div>
+          <input type="time" class="time-input" id="time0" value="08:00" onchange="saveTimes()">
+        </div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">☀️ Midi</div>
+            <div class="settings-item-sub">Deuxième séance</div>
+          </div>
+          <input type="time" class="time-input" id="time1" value="12:00" onchange="saveTimes()">
+        </div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">🌙 Soir</div>
+            <div class="settings-item-sub">Troisième séance</div>
+          </div>
+          <input type="time" class="time-input" id="time2" value="18:00" onchange="saveTimes()">
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Rythme respiratoire</div>
+        <div style="display:flex;gap:10px;margin-bottom:4px;" id="rhythmSelector">
+          <button class="rhythm-btn selected" onclick="setRhythm('4-6',this)" data-label="4s / 6s" data-desc="Classique · recommandé">
+            <span class="rhythm-val">4 <span style="font-size:10px;opacity:0.6">insp</span></span>
+            <span class="rhythm-sep">·</span>
+            <span class="rhythm-val">6 <span style="font-size:10px;opacity:0.6">exp</span></span>
+            <span class="rhythm-tag">Classique</span>
+          </button>
+          <button class="rhythm-btn" onclick="setRhythm('5-5',this)" data-label="5s / 5s" data-desc="Équilibré">
+            <span class="rhythm-val">5 <span style="font-size:10px;opacity:0.6">insp</span></span>
+            <span class="rhythm-sep">·</span>
+            <span class="rhythm-val">5 <span style="font-size:10px;opacity:0.6">exp</span></span>
+            <span class="rhythm-tag">Équilibré</span>
+          </button>
+          <button class="rhythm-btn" onclick="setRhythm('6-4',this)" data-label="6s / 4s" data-desc="Énergisant">
+            <span class="rhythm-val">6 <span style="font-size:10px;opacity:0.6">insp</span></span>
+            <span class="rhythm-sep">·</span>
+            <span class="rhythm-val">4 <span style="font-size:10px;opacity:0.6">exp</span></span>
+            <span class="rhythm-tag">Énergisant</span>
+          </button>
+        </div>
+        <div class="settings-item" style="background:rgba(46,196,182,0.06);border-color:rgba(46,196,182,0.12);padding:12px 16px;">
+          <div style="font-size:12px;color:var(--subtext);line-height:1.5;" id="rhythmDesc">
+            💡 <strong style="color:var(--aqua);">Classique (4-6)</strong> — L'expiration plus longue active le nerf vague et favorise la récupération. Idéal après une journée chargée.
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Pendant la séance</div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">🔕 Mode Ne pas déranger</div>
+            <div class="settings-item-sub">Bloque les appels entrants</div>
+          </div>
+          <button class="toggle on" id="dndToggle" onclick="toggleDND()"></button>
+        </div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">🔊 Guidage sonore</div>
+            <div class="settings-item-sub">Sons inspiration/expiration</div>
+          </div>
+          <button class="toggle on" id="soundSettingToggle" onclick="toggleSoundSetting()"></button>
+        </div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">📳 Vibration</div>
+            <div class="settings-item-sub">Vibre pour guider le rythme</div>
+          </div>
+          <button class="toggle" id="vibToggle" onclick="toggleVib()"></button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Notifications</div>
+        <div class="settings-item">
+          <div>
+            <div class="settings-item-label">🔔 Rappels activés</div>
+            <div class="settings-item-sub">Notifications à 8h, 12h, 18h</div>
+          </div>
+          <button class="toggle on" id="notifToggle" onclick="toggleNotif()"></button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Installer l'app</div>
+        <div class="settings-item" onclick="showInstallGuide()" style="cursor:pointer;">
+          <div>
+            <div class="settings-item-label">📲 Ajouter à l'écran d'accueil</div>
+            <div class="settings-item-sub">Utiliser comme une vraie app</div>
+          </div>
+          <span style="color:var(--subtext);">→</span>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Données</div>
+        <div class="settings-item" onclick="resetData()" style="cursor:pointer;">
+          <div>
+            <div class="settings-item-label" style="color:#e06c75;">🗑 Réinitialiser</div>
+            <div class="settings-item-sub">Effacer toutes les données</div>
+          </div>
+          <span style="color:var(--subtext);">→</span>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-tabs">
+      <button class="tab-btn" onclick="showScreen('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg>
+        Accueil
+      </button>
+      <button class="tab-btn" onclick="showScreen('stats')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg>
+        Suivi
+      </button>
+      <button class="tab-btn active" onclick="showScreen('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Réglages
+      </button>
+    </div>
+  </div>
+
+<!-- INSTALL GUIDE MODAL -->
+<div id="installModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(6,15,26,0.92);backdrop-filter:blur(12px);overflow-y:auto;">
+  <div style="max-width:420px;margin:0 auto;padding:32px 24px 48px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--aqua);">📲 Installer l'app</div>
+      <button onclick="hideInstallGuide()" style="background:none;border:none;color:var(--subtext);font-size:24px;cursor:pointer;">✕</button>
+    </div>
+
+    <!-- LOGO PREVIEW -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="width:100px;height:100px;margin:0 auto 12px;border-radius:22px;background:linear-gradient(135deg,#0d2b45,#0a1628);border:1px solid rgba(46,196,182,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 8px 32px rgba(46,196,182,0.2);">
+        <div style="position:relative;width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;width:48px;height:48px;border-radius:50%;border:1.5px solid rgba(46,196,182,0.3);"></div>
+          <div style="position:absolute;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(46,196,182,0.5);"></div>
+          <div style="width:18px;height:18px;border-radius:50%;background:#2ec4b6;box-shadow:0 0 12px rgba(46,196,182,0.6);"></div>
+        </div>
+        <div style="font-family:'Georgia',serif;font-size:8px;color:#e8f4f2;letter-spacing:1px;">Cohérence</div>
+        <div style="font-size:8px;color:#e8c97a;letter-spacing:2px;">365</div>
+      </div>
+      <div style="font-size:12px;color:var(--subtext);">Voilà à quoi ressemblera ton icône</div>
+    </div>
+
+    <!-- ÉTAPE 1: TÉLÉCHARGER -->
+    <div style="margin-bottom:20px;">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--subtext);margin-bottom:10px;">Étape 1 · Télécharger</div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(46,196,182,0.12);border-radius:14px;padding:16px;">
+        <p style="font-size:13px;color:var(--text);line-height:1.6;margin-bottom:12px;">Le fichier <strong style="color:var(--aqua);">coherence-cardiaque.html</strong> est ton app complète. Télécharge-le depuis Claude et envoie-le sur ton téléphone.</p>
+        <div style="font-size:12px;color:var(--subtext);line-height:1.7;">
+          📧 Par mail à toi-même<br>
+          💬 Via WhatsApp (à toi-même)<br>
+          🔵 Via Teams ou AirDrop
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2: OUVRIR -->
+    <div style="margin-bottom:20px;">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--subtext);margin-bottom:10px;">Étape 2 · Ouvrir sur ton téléphone</div>
+
+      <!-- iOS -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(46,196,182,0.12);border-radius:14px;padding:16px;margin-bottom:8px;">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px;">🍎 iPhone / iPad</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--aqua);flex-shrink:0;">1</div>
+            <div style="font-size:12px;color:var(--subtext);line-height:1.5;">Ouvre le fichier reçu → il s'ouvre dans <strong style="color:var(--text);">Safari</strong></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--aqua);flex-shrink:0;">2</div>
+            <div style="font-size:12px;color:var(--subtext);line-height:1.5;">Appuie sur l'icône <strong style="color:var(--text);">Partager</strong> <span style="font-size:14px;">⬆️</span> en bas de Safari</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--aqua);flex-shrink:0;">3</div>
+            <div style="font-size:12px;color:var(--subtext);line-height:1.5;">Choisis <strong style="color:var(--aqua);">"Sur l'écran d'accueil"</strong> → confirme</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--aqua);flex-shrink:0;">4</div>
+            <div style="font-size:12px;color:var(--subtext);line-height:1.5;">L'icône apparaît sur ton écran d'accueil 🎉</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Android -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(46,196,182,0.12);border-radius:14px;padding:16px;">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px;">🤖 Android</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--aqua);flex-shrink:0;">1</div>
+            <div style="font-size:12px;color:var(--subtext);line-height:1.5;">Ouvre le fichier dans <strong style="color:var(--text);">Chrome</strong></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--aqua);flex-shrink:0;">2</div>
+            <div style="font-size:12px;color:var(--subtext);line-height:1.5;">Menu <strong style="color:var(--text);">⋮</strong> en haut à droite</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(46,196,182,0.15);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--aqua);flex-shrink:0;">3</div>
+            <div style="font-size:12px;color:var(--subtext);line-height:1.5;">Choisis <strong style="color:var(--aqua);">"Ajouter à l'écran d'accueil"</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTE MÉMOIRE -->
+    <div style="background:rgba(232,201,122,0.06);border:1px solid rgba(232,201,122,0.2);border-radius:12px;padding:14px 16px;">
+      <div style="font-size:12px;color:rgba(232,201,122,0.8);line-height:1.6;">
+        💾 <strong>Mémoire :</strong> tes séances et ton streak sont sauvegardés dans le navigateur de ton téléphone. Ouvre toujours l'app depuis l'icône (pas depuis le fichier) pour garder la même mémoire.
+      </div>
+    </div>
+
+    <button onclick="hideInstallGuide()" style="width:100%;margin-top:20px;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;border-radius:50px;padding:16px;color:var(--deep);font-size:15px;font-weight:500;cursor:pointer;">
+      C'est compris ! 🌊
+    </button>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ============ STATE ============
+const STORAGE_KEY = 'coherence365_v2';
+let state = {
+  sessions: {}, // { 'YYYY-MM-DD': [0,1,2] done flags }
+  settings: { dnd: true, sound: true, vib: false, notif: true,
+               times: ['08:00','12:00','18:00'], rhythm: '4-6',
+               soundMode: 'tones', userName: 'Greg' }
+};
+
+function loadState() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) state = { ...state, ...JSON.parse(s) };
+  } catch(e) {}
+}
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+function todayKey() {
+  return new Date().toISOString().split('T')[0];
+}
+function getTodaySessions() {
+  return state.sessions[todayKey()] || [false,false,false];
+}
+function markSession(idx) {
+  const key = todayKey();
+  if (!state.sessions[key]) state.sessions[key] = [false,false,false];
+  state.sessions[key][idx] = true;
+  saveState();
+  updateHome();
+}
+
+// ============ PARTICLES ============
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100 + '%';
+    p.style.width = p.style.height = (Math.random()*3+1)+'px';
+    p.style.animationDuration = (Math.random()*20+15)+'s';
+    p.style.animationDelay = (Math.random()*20)+'s';
+    p.style.opacity = Math.random()*0.5;
+    container.appendChild(p);
+  }
+}
+
+// ============ QUOTES ============
+const quotes = [
+  '"Chaque souffle est un nouveau départ."',
+  '"Ta régularité est ton superpouvoir."',
+  '"5 minutes pour toi, une journée transformée."',
+  '"Inspire la sérénité, expire le stress."',
+  '"La constance construit la résilience."',
+  '"Ton cœur mérite cette attention quotidienne."',
+  '"Respirer conscient, c\'est déjà agir."',
+];
+const completeMessages = [
+  "Tu viens d'offrir 5 minutes précieuses à ton cœur. Cette régularité, c'est déjà une victoire.",
+  "Magnifique engagement envers toi-même. Chaque séance compte, chaque souffle aussi.",
+  "Ton système nerveux te remercie. Continue sur cette lancée, tu es sur la bonne voie !",
+  "Une séance de plus dans la boîte ! La constance est ton allié le plus puissant.",
+  "Bravo ! Ce moment pour toi n'est pas du luxe, c'est une nécessité. Tu as bien fait.",
+];
+
+// ============ SCREEN NAV ============
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  if (id === 'home') updateHome();
+  if (id === 'stats') updateStats();
+  // sync tab buttons
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+}
+
+// ============ HOME ============
+function updateHome() {
+  const sessions = getTodaySessions();
+  const done = sessions.filter(Boolean).length;
+  // sessions dots
+  [0,1,2].forEach(i => {
+    const dot = document.getElementById('sess-'+i);
+    const check = document.getElementById('check-'+i);
+    if (sessions[i]) {
+      dot.classList.add('done');
+      check.textContent = '✓';
+    } else {
+      dot.classList.remove('done');
+      check.textContent = '';
+    }
+  });
+
+  // streak
+  const streak = computeStreak();
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('streakFire').textContent = streak >= 7 ? '🔥' : streak >= 3 ? '⭐' : '🌊';
+
+  const name = state.settings.userName || 'Greg';
+  const h = new Date().getHours();
+  let greet = h < 12 ? `Belle matinée, <em>${name}</em>` : h < 18 ? `Bon après-midi, <em>${name}</em>` : `Bonne soirée, <em>${name}</em>`;
+  document.getElementById('greetingMain').innerHTML = greet;
+  const greetSub = document.getElementById('greetingSub');
+  if (greetSub) greetSub.textContent = `Bienvenue, ${name}`;
+
+  // quote
+  document.getElementById('motivational').textContent = quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+function computeStreak() {
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const key = d.toISOString().split('T')[0];
+    const s = state.sessions[key];
+    const done = s && s.filter(Boolean).length;
+    if (i === 0 && !done) continue; // today not done yet, don't break streak
+    if (done >= 1) streak++;
+    else if (i > 0) break;
+  }
+  return streak;
+}
+
+// ============ EXERCISE ============
+let exerciseRunning = false;
+let exercisePaused = false;
+let exerciseInterval = null;
+let totalSeconds = 300;
+let elapsed = 0;
+let cyclePos = 0; // position in 10s cycle (4 inhale + 6 exhale)
+let isInhale = true;
+let selectedVisual = 0;
+let soundOn = true;
+let currentSessionIdx = -1;
+
+function goToExercise() {
+  // find next undone session or just do it
+  const sessions = getTodaySessions();
+  currentSessionIdx = sessions.indexOf(false);
+  if (currentSessionIdx === -1) currentSessionIdx = 0;
+  showScreen('exercise');
+  resetExercise();
+}
+function startSession(idx) {
+  currentSessionIdx = idx;
+  showScreen('exercise');
+  resetExercise();
+}
+
+function resetExercise() {
+  exerciseRunning = false; exercisePaused = false;
+  clearInterval(exerciseInterval);
+  elapsed = 0; cyclePos = 0; isInhale = true;
+  updateTimerDisplay();
+  document.getElementById('phaseLabel').textContent = 'Prêt ?';
+  document.getElementById('phaseSub').textContent = 'Appuie pour commencer';
+  document.getElementById('startPauseBtn').textContent = '▶ Démarrer';
+  document.getElementById('sessionTimer').style.display = 'none';
+  updateProgress(0);
+  resetVisual();
+}
+
+function toggleExercise() {
+  if (!exerciseRunning && !exercisePaused) {
+    startExercise();
+  } else if (exerciseRunning) {
+    pauseExercise();
+  } else {
+    resumeExercise();
+  }
+}
+
+function startExercise() {
+  exerciseRunning = true;
+  document.getElementById('sessionTimer').style.display = 'block';
+  document.getElementById('startPauseBtn').textContent = '⏸ Pause';
+  // DND attempt
+  if (state.settings.dnd) requestDND();
+  runCycle();
+  exerciseInterval = setInterval(tick, 1000);
+}
+function pauseExercise() {
+  exerciseRunning = false; exercisePaused = true;
+  clearInterval(exerciseInterval);
+  document.getElementById('startPauseBtn').textContent = '▶ Reprendre';
+  document.getElementById('phaseLabel').textContent = 'Pause';
+}
+function resumeExercise() {
+  exerciseRunning = true; exercisePaused = false;
+  document.getElementById('startPauseBtn').textContent = '⏸ Pause';
+  exerciseInterval = setInterval(tick, 1000);
+}
+
+function tick() {
+  elapsed++;
+  cyclePos++;
+  updateTimerDisplay();
+  updateProgress(elapsed/totalSeconds);
+
+  if (elapsed >= totalSeconds) {
+    endExercise(); return;
+  }
+
+  // Dynamic cycle based on selected rhythm
+  const { inhale: iDur, exhale: eDur } = getRhythm();
+  const cycleDur = iDur + eDur;
+  const pos = cyclePos % cycleDur;
+  if (pos === 0) { isInhale = true; runCycle(); }
+  else if (pos === iDur) { isInhale = false; runCycle(); }
+
+  if (state.settings.vib && navigator.vibrate) {
+    if (pos === 0) navigator.vibrate([100]);
+    if (pos === iDur) navigator.vibrate([50]);
+  }
+}
+
+function getRhythm() {
+  const r = state.settings.rhythm || '4-6';
+  const [i, e] = r.split('-').map(Number);
+  return { inhale: i, exhale: e };
+}
+
+function runCycle() {
+  const label = document.getElementById('phaseLabel');
+  const sub = document.getElementById('phaseSub');
+  const { inhale: iDur, exhale: eDur } = getRhythm();
+  if (isInhale) {
+    label.textContent = 'Inspirez';
+    label.style.color = 'var(--aqua)';
+    sub.textContent = `${iDur} secondes · par le nez`;
+    setVisualState('inhale', iDur);
+    if (soundOn) playSound(true, iDur);
+  } else {
+    label.textContent = 'Expirez';
+    label.style.color = 'var(--foam)';
+    sub.textContent = `${eDur} secondes · par la bouche`;
+    setVisualState('exhale', eDur);
+    if (soundOn) playSound(false, eDur);
+  }
+}
+
+function endExercise() {
+  clearInterval(exerciseInterval);
+  exerciseRunning = false;
+  markSession(currentSessionIdx >= 0 ? currentSessionIdx : 0);
+  if (state.settings.dnd) releaseDND();
+  launchConfetti();
+  setTimeout(() => {
+    const sessions = getTodaySessions();
+    const done = sessions.filter(Boolean).length;
+    document.getElementById('completeMsg').textContent = completeMessages[Math.floor(Math.random()*completeMessages.length)];
+    document.getElementById('completeXp').textContent = `✦ Séance ${done}/3 aujourd'hui`;
+    showScreen('complete');
+  }, 600);
+}
+
+function updateTimerDisplay() {
+  const rem = Math.max(0, totalSeconds - elapsed);
+  const m = Math.floor(rem/60), s = rem%60;
+  document.getElementById('timerCount').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function updateProgress(pct) {
+  const circle = document.getElementById('progressFill');
+  const circumference = 753.98;
+  circle.style.strokeDashoffset = circumference * (1 - pct);
+}
+
+// ============ VISUALS ============
+function selectVisual(idx, el) {
+  document.querySelectorAll('.visual-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedVisual = idx;
+  ['visual-orb','visual-ball','visual-wave','visual-circles','visual-arc'].forEach((id,i) => {
+    document.getElementById(id).style.display = i===idx ? 'flex' : 'none';
+    if (id==='visual-ball'||id==='visual-wave'||id==='visual-arc') document.getElementById(id).style.display = i===idx ? 'block' : 'none';
+  });
+  resetVisual();
+}
+
+function resetVisual() {
+  document.getElementById('mainOrb').className = 'orb';
+  document.getElementById('ballBead').classList.remove('at-top');
+  document.querySelectorAll('.circle-ring').forEach(r => { r.classList.remove('expand','contract'); });
+}
+
+function setVisualState(phase, dur) {
+  const orb = document.getElementById('mainOrb');
+  const bead = document.getElementById('ballBead');
+  const rings = document.querySelectorAll('.circle-ring');
+  const isIn = phase === 'inhale';
+  const d = dur || (isIn ? 4 : 6);
+  const t = `${d}s`;
+
+  orb.className = 'orb' + (isIn ? ' inhaling' : ' exhaling');
+  orb.style.transition = `all ${t} cubic-bezier(0.4,0,0.2,1)`;
+
+  if (isIn) { bead.classList.remove('at-top'); bead.style.transition = `bottom ${t} ease`; }
+  else { bead.classList.add('at-top'); bead.style.transition = `bottom ${t} ease`; }
+
+  rings.forEach(r => {
+    r.classList.remove('expand','contract');
+    r.classList.add(isIn ? 'expand' : 'contract');
+    r.style.transition = `all ${t} ease`;
+  });
+
+  animateWave(isIn, d);
+  animateArc(isIn, d);
+}
+
+let waveAnim = null;
+function animateWave(isIn, dur) {
+  clearInterval(waveAnim);
+  const path = document.getElementById('wavePath');
+  if (!path) return;
+  const duration = (dur || (isIn ? 4 : 6)) * 1000;
+  const start = Date.now();
+  waveAnim = setInterval(() => {
+    const prog = Math.min((Date.now()-start)/duration, 1);
+    const amp = isIn ? 30*prog : 30*(1-prog);
+    path.setAttribute('d', `M0,60 Q60,${60-amp} 120,60 Q180,${60+amp} 240,60`);
+    if (prog >= 1) clearInterval(waveAnim);
+  }, 30);
+}
+
+let arcAnim = null;
+function animateArc(isIn, dur) {
+  clearInterval(arcAnim);
+  const canvas = document.getElementById('arcCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const start = Date.now();
+  const duration = (dur || (isIn ? 4 : 6)) * 1000;
+  arcAnim = setInterval(() => {
+    const prog = Math.min((Date.now()-start)/duration, 1);
+    ctx.clearRect(0,0,240,120);
+    const colors = ['#2ec4b6','#a8e6df','#e8c97a','#7fb8b2','#1a7a6e'];
+    const maxAngle = isIn ? Math.PI*prog : Math.PI*(1-prog);
+    colors.forEach((c,i) => {
+      const r = 90 - i*14;
+      ctx.beginPath();
+      ctx.arc(120, 120, r, Math.PI, Math.PI+maxAngle);
+      ctx.strokeStyle = c; ctx.lineWidth = 8; ctx.lineCap = 'round';
+      ctx.globalAlpha = 0.7 - i*0.1;
+      ctx.stroke();
+    });
+    if (prog >= 1) clearInterval(arcAnim);
+  }, 30);
+}
+
+// ============ SOUND ENGINE ============
+let audioCtx = null;
+let uploadedAudioBuffer = null;
+let uploadedAudioSource = null;
+let activeNodes = [];
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function stopAllSounds() {
+  activeNodes.forEach(n => { try { n.stop(); } catch(e) {} });
+  activeNodes = [];
+  if (uploadedAudioSource) { try { uploadedAudioSource.stop(); } catch(e) {} uploadedAudioSource = null; }
+}
+
+function playSound(isInhale, dur) {
+  if (!soundOn) return;
+  const mode = state.settings.soundMode || 'tones';
+  stopAllSounds();
+  const ctx = getAudioCtx();
+  try {
+    if (mode === 'tones') playSoundTones(ctx, isInhale, dur);
+    else if (mode === 'cardiac') playSoundCardiac(ctx, isInhale, dur);
+    else if (mode === 'binaural') playSoundBinaural(ctx, isInhale, dur);
+    else if (mode === 'ocean') playSoundOcean(ctx, isInhale, dur);
+    else if (mode === 'upload') playSoundUpload(ctx, isInhale, dur);
+  } catch(e) {}
+}
+
+// MODE 1: Tons sinusoïdaux (original)
+function playSoundTones(ctx, isInhale, dur) {
+  const freq = isInhale ? 440 : 300;
+  const vol = isInhale ? 0.3 : 0.2;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.type = 'sine'; osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.4);
+  gain.gain.linearRampToValueAtTime(0, ctx.currentTime + dur - 0.3);
+  osc.start(); osc.stop(ctx.currentTime + dur);
+  activeNodes.push(osc);
+}
+
+// MODE 2: Battement cardiaque (style Drouot — cœur qui pulse au rythme)
+function playSoundCardiac(ctx, isInhale, dur) {
+  // Heartbeat: deux "boum" (lub-dub) répétés tout au long de la phase
+  const bpm = 60; // 1 battement/sec pour la cohérence
+  const beatInterval = 60 / bpm;
+  const beatCount = Math.floor(dur / beatInterval);
+
+  for (let i = 0; i < beatCount; i++) {
+    const t = ctx.currentTime + i * beatInterval;
+    // Lub (premier son — plus grave, plus fort)
+    makeBeat(ctx, t, 55, 0.55, 0.10);
+    // Dub (deuxième son — légèrement plus aigu, plus court)
+    makeBeat(ctx, t + 0.12, 45, 0.35, 0.07);
+  }
+
+  // Fond harmonique doux : bourdon sur la fréquence cardiaque (0.1 Hz ~ cohérence)
+  const drone = ctx.createOscillator();
+  const droneGain = ctx.createGain();
+  drone.type = 'sine'; drone.frequency.value = isInhale ? 136.1 : 128; // OM cardiaque
+  droneGain.gain.setValueAtTime(0, ctx.currentTime);
+  droneGain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.5);
+  droneGain.gain.linearRampToValueAtTime(0, ctx.currentTime + dur - 0.5);
+  drone.connect(droneGain); droneGain.connect(ctx.destination);
+  drone.start(); drone.stop(ctx.currentTime + dur);
+  activeNodes.push(drone);
+}
+
+function makeBeat(ctx, t, freq, gain, dur) {
+  const osc = ctx.createOscillator();
+  const gainNode = ctx.createGain();
+  // Filtre passe-bas pour rendre le son plus "corps"
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'lowpass'; filter.frequency.value = 200;
+  osc.type = 'sine'; osc.frequency.setValueAtTime(freq, t);
+  osc.frequency.exponentialRampToValueAtTime(freq * 0.5, t + dur);
+  gainNode.gain.setValueAtTime(0, t);
+  gainNode.gain.linearRampToValueAtTime(gain, t + 0.01);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  osc.connect(filter); filter.connect(gainNode); gainNode.connect(ctx.destination);
+  osc.start(t); osc.stop(t + dur + 0.05);
+  activeNodes.push(osc);
+}
+
+// MODE 3: Binaurales alpha (10 Hz)
+function playSoundBinaural(ctx, isInhale, dur) {
+  const baseFreq = 200;
+  const beatFreq = 10; // alpha
+  // Canal gauche
+  const oscL = ctx.createOscillator();
+  const gainL = ctx.createGain();
+  const panL = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+  oscL.type = 'sine'; oscL.frequency.value = baseFreq;
+  gainL.gain.setValueAtTime(0, ctx.currentTime);
+  gainL.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.5);
+  gainL.gain.linearRampToValueAtTime(0, ctx.currentTime + dur - 0.3);
+  if (panL) { panL.pan.value = -1; oscL.connect(gainL); gainL.connect(panL); panL.connect(ctx.destination); }
+  else { oscL.connect(gainL); gainL.connect(ctx.destination); }
+  oscL.start(); oscL.stop(ctx.currentTime + dur);
+  activeNodes.push(oscL);
+  // Canal droit
+  const oscR = ctx.createOscillator();
+  const gainR = ctx.createGain();
+  const panR = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+  oscR.type = 'sine'; oscR.frequency.value = baseFreq + beatFreq;
+  gainR.gain.setValueAtTime(0, ctx.currentTime);
+  gainR.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.5);
+  gainR.gain.linearRampToValueAtTime(0, ctx.currentTime + dur - 0.3);
+  if (panR) { panR.pan.value = 1; oscR.connect(gainR); gainR.connect(panR); panR.connect(ctx.destination); }
+  else { oscR.connect(gainR); gainR.connect(ctx.destination); }
+  oscR.start(); oscR.stop(ctx.currentTime + dur);
+  activeNodes.push(oscR);
+  // Carrier doux
+  const osc2 = ctx.createOscillator();
+  const gain2 = ctx.createGain();
+  osc2.type = 'sine'; osc2.frequency.value = 136.1;
+  gain2.gain.setValueAtTime(0, ctx.currentTime);
+  gain2.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.5);
+  gain2.gain.linearRampToValueAtTime(0, ctx.currentTime + dur - 0.3);
+  osc2.connect(gain2); gain2.connect(ctx.destination);
+  osc2.start(); osc2.stop(ctx.currentTime + dur);
+  activeNodes.push(osc2);
+}
+
+// MODE 4: Vague océane (bruit rose filtré)
+function playSoundOcean(ctx, isInhale, dur) {
+  const bufSize = ctx.sampleRate * dur;
+  const buffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  // Bruit rose (filtre sur bruit blanc)
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+  for (let i = 0; i < bufSize; i++) {
+    const white = Math.random() * 2 - 1;
+    b0 = 0.99886*b0 + white*0.0555179; b1 = 0.99332*b1 + white*0.0750759;
+    b2 = 0.96900*b2 + white*0.1538520; b3 = 0.86650*b3 + white*0.3104856;
+    b4 = 0.55000*b4 + white*0.5329522; b5 = -0.7616*b5 - white*0.0168980;
+    data[i] = (b0+b1+b2+b3+b4+b5+b6+white*0.5362) * 0.11;
+    b6 = white * 0.115926;
+  }
+  // Enveloppe vague : montée douce, descente douce
+  const envDur = dur * ctx.sampleRate;
+  const fadeLen = Math.min(ctx.sampleRate * 1.5, envDur * 0.3);
+  for (let i = 0; i < fadeLen; i++) data[i] *= i / fadeLen;
+  for (let i = 0; i < fadeLen; i++) data[bufSize - 1 - i] *= i / fadeLen;
+
+  const source = ctx.createBufferSource();
+  const filter = ctx.createBiquadFilter();
+  const gain = ctx.createGain();
+  filter.type = 'bandpass';
+  filter.frequency.value = isInhale ? 600 : 300;
+  filter.Q.value = 0.8;
+  gain.gain.value = isInhale ? 0.9 : 0.7;
+  source.buffer = buffer;
+  source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  source.start(); source.stop(ctx.currentTime + dur);
+  activeNodes.push(source);
+}
+
+// MODE 5: Fichier uploadé
+function playSoundUpload(ctx, isInhale, dur) {
+  if (!uploadedAudioBuffer) return;
+  const source = ctx.createBufferSource();
+  const gain = ctx.createGain();
+  source.buffer = uploadedAudioBuffer;
+  source.loop = true;
+  gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.8, ctx.currentTime + 0.5);
+  gain.gain.linearRampToValueAtTime(0, ctx.currentTime + dur - 0.4);
+  source.connect(gain); gain.connect(ctx.destination);
+  source.start(); source.stop(ctx.currentTime + dur);
+  uploadedAudioSource = source;
+  activeNodes.push(source);
+}
+
+// Compatibility: keep old playTone call working
+function playTone(freq, vol, dur) { /* replaced by playSound */ }
+
+function toggleSound() {
+  soundOn = !soundOn;
+  const btn = document.getElementById('soundToggle');
+  btn.textContent = soundOn ? '🔊 Son guidé' : '🔇 Son guidé';
+  btn.classList.toggle('on', soundOn);
+  if (!soundOn) stopAllSounds();
+}
+
+// ============ SOUND SETTINGS ============
+function setSoundMode(mode, el) {
+  state.settings.soundMode = mode;
+  saveState();
+  document.querySelectorAll('.sound-mode-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  ['tones','cardiac','binaural','ocean','upload'].forEach(m => {
+    const c = document.getElementById('snd-check-'+m);
+    if (c) c.textContent = m === mode ? '✓' : '';
+  });
+  document.getElementById('uploadZone').style.display = mode === 'upload' ? 'block' : 'none';
+  document.getElementById('previewZone').style.display = 'block';
+}
+
+function loadAudioFile(input) {
+  const file = input.files[0]; if (!file) return;
+  document.getElementById('uploadFileName').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const ctx = getAudioCtx();
+    ctx.decodeAudioData(e.target.result, buf => {
+      uploadedAudioBuffer = buf;
+      showNotifMsg('✓ Son chargé', file.name);
+    });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function previewSound() {
+  const ctx = getAudioCtx();
+  const { inhale } = getRhythm();
+  stopAllSounds();
+  playSound(true, Math.min(inhale, 3));
+}
+
+function initSoundModeUI() {
+  const mode = state.settings.soundMode || 'tones';
+  document.querySelectorAll('.sound-mode-btn').forEach(btn => {
+    const m = btn.getAttribute('onclick').match(/'([^']+)'/);
+    if (m) btn.classList.toggle('selected', m[1] === mode);
+  });
+  ['tones','cardiac','binaural','ocean','upload'].forEach(m => {
+    const c = document.getElementById('snd-check-'+m);
+    if (c) c.textContent = m === mode ? '✓' : '';
+  });
+  if (mode === 'upload') document.getElementById('uploadZone').style.display = 'block';
+}
+
+// ============ NAME SETTING ============
+function saveName() {
+  const val = document.getElementById('userNameInput').value.trim();
+  state.settings.userName = val || 'Greg';
+  saveState();
+  updateHome();
+}
+
+function initNameUI() {
+  const el = document.getElementById('userNameInput');
+  if (el) el.value = state.settings.userName || 'Greg';
+}
+
+// ============ STATS ============
+function updateStats() {
+  const period = currentPeriod || 'day';
+  const key = todayKey();
+  const today = getTodaySessions();
+  const todayDone = today.filter(Boolean).length;
+
+  // compute stats
+  let total = 0, perfect = 0, allKeys = Object.keys(state.sessions);
+  allKeys.forEach(k => {
+    const s = state.sessions[k]; if (!s) return;
+    const d = s.filter(Boolean).length;
+    total += d;
+    if (d >= 3) perfect++;
+  });
+  const streak = computeStreak();
+
+  let periodTotal, periodLabel;
+  if (period==='day') { periodTotal = todayDone; periodLabel = 'séances aujourd\'hui'; }
+  else if (period==='week') {
+    periodTotal = 0;
+    for (let i=0;i<7;i++) { const d=new Date(); d.setDate(d.getDate()-i); const k=d.toISOString().split('T')[0]; periodTotal += (state.sessions[k]||[]).filter(Boolean).length; }
+    periodLabel = 'séances cette semaine';
+  } else if (period==='month') {
+    periodTotal = 0;
+    const now = new Date();
+    allKeys.forEach(k => { if (k.startsWith(now.toISOString().slice(0,7))) periodTotal += (state.sessions[k]||[]).filter(Boolean).length; });
+    periodLabel = 'séances ce mois';
+  } else {
+    periodTotal = total;
+    periodLabel = 'séances au total';
+  }
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${periodTotal}</div><div class="stat-label">${periodLabel}</div></div>
+    <div class="stat-card"><div class="stat-value">${streak}</div><div class="stat-label">jours consécutifs</div></div>
+    <div class="stat-card"><div class="stat-value">${perfect}</div><div class="stat-label">jours complets</div></div>
+    <div class="stat-card"><div class="stat-value">${Math.round(total*5)}'</div><div class="stat-label">minutes respirées</div></div>
+  `;
+
+  buildCalendar();
+  document.getElementById('statsMotiv').textContent = quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+let currentPeriod = 'day';
+function setPeriod(p, el) {
+  currentPeriod = p;
+  document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  updateStats();
+}
+
+function buildCalendar() {
+  const now = new Date();
+  const year = now.getFullYear(), month = now.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const todayNum = now.getDate();
+  const monthStr = now.toISOString().slice(0,7);
+
+  let html = ['Lu','Ma','Me','Je','Ve','Sa','Di'].map(d=>`<div class="cal-day-label">${d}</div>`).join('');
+
+  const startOffset = (firstDay+6)%7; // Monday-first
+  for (let i=0;i<startOffset;i++) html += '<div class="cal-cell"></div>';
+
+  for (let d=1;d<=daysInMonth;d++) {
+    const key = `${monthStr}-${d.toString().padStart(2,'0')}`;
+    const s = state.sessions[key]||[];
+    const done = s.filter(Boolean).length;
+    const isToday = d===todayNum;
+    let cls = 'cal-cell';
+    if (done>=3) cls += ' has-3';
+    else if (done===2) cls += ' has-2';
+    else if (done===1) cls += ' has-1';
+    if (isToday) cls += ' today';
+    const dots = done>0 ? Array(done).fill('<div class="cal-dot"></div>').join('') : '';
+    html += `<div class="${cls}"><span style="font-size:9px;color:var(--subtext)">${d}</span>${dots}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML = html;
+}
+
+const RHYTHM_DESCS = {
+  '4-6': '💡 <strong style="color:var(--aqua);">Classique (4-6)</strong> — L\'expiration plus longue active le nerf vague et favorise la récupération. Idéal après une journée chargée.',
+  '5-5': '⚖️ <strong style="color:var(--aqua);">Équilibré (5-5)</strong> — Rythme symétrique, parfait pour retrouver un état de calme neutre. Bon à toute heure.',
+  '6-4': '⚡ <strong style="color:var(--aqua);">Énergisant (6-4)</strong> — Inspiration prolongée, idéal pour démarrer la journée ou sortir d\'un coup de mou. À utiliser le matin.',
+};
+
+function setRhythm(val, el) {
+  state.settings.rhythm = val;
+  saveState();
+  document.querySelectorAll('.rhythm-btn').forEach(b => b.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+  const desc = document.getElementById('rhythmDesc');
+  if (desc) desc.innerHTML = RHYTHM_DESCS[val] || '';
+}
+
+function initRhythmUI() {
+  const r = state.settings.rhythm || '4-6';
+  document.querySelectorAll('.rhythm-btn').forEach(btn => {
+    const m = btn.getAttribute('onclick').match(/'([^']+)'/);
+    if (m) btn.classList.toggle('selected', m[1] === r);
+  });
+  const desc = document.getElementById('rhythmDesc');
+  if (desc) desc.innerHTML = RHYTHM_DESCS[r] || '';
+}
+
+function toggleDND() {
+  state.settings.dnd = !state.settings.dnd;
+  document.getElementById('dndToggle').classList.toggle('on', state.settings.dnd);
+  saveState();
+}
+function toggleSoundSetting() {
+  state.settings.sound = !state.settings.sound;
+  soundOn = state.settings.sound;
+  document.getElementById('soundSettingToggle').classList.toggle('on', state.settings.sound);
+  saveState();
+}
+function toggleVib() {
+  state.settings.vib = !state.settings.vib;
+  document.getElementById('vibToggle').classList.toggle('on', state.settings.vib);
+  saveState();
+}
+function toggleNotif() {
+  state.settings.notif = !state.settings.notif;
+  document.getElementById('notifToggle').classList.toggle('on', state.settings.notif);
+  if (state.settings.notif) requestNotifPermission();
+  saveState();
+}
+function saveTimes() {
+  state.settings.times = [
+    document.getElementById('time0').value,
+    document.getElementById('time1').value,
+    document.getElementById('time2').value,
+  ];
+  saveState();
+  scheduleNotifications();
+}
+function resetData() {
+  if (confirm('Effacer toutes les données ? Cette action est irréversible.')) {
+    state.sessions = {};
+    saveState();
+    updateHome();
+    showNotifMsg('✓ Données effacées', 'Nouveau départ !');
+  }
+}
+
+// ============ NOTIFICATIONS ============
+function requestNotifPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+function scheduleNotifications() {
+  // In a real app we'd use ServiceWorker. Here we use in-tab timers as demo.
+  const times = state.settings.times;
+  times.forEach((t, i) => {
+    const [h,m] = t.split(':').map(Number);
+    const now = new Date();
+    const target = new Date(); target.setHours(h,m,0,0);
+    if (target <= now) target.setDate(target.getDate()+1);
+    const delay = target-now;
+    setTimeout(() => {
+      if (state.settings.notif) showNotif(i);
+    }, delay);
+  });
+}
+function showNotif(idx) {
+  const labels = ['du matin','de midi','du soir'];
+  showNotifMsg(`🌊 Séance ${labels[idx||0]}`, 'Ta cohérence cardiaque t\'attend');
+}
+function showNotifMsg(title, body) {
+  document.querySelector('.notif-banner .notif-title').textContent = title;
+  document.getElementById('notifBody').textContent = body;
+  const b = document.getElementById('notifBanner');
+  b.classList.add('show');
+  setTimeout(() => b.classList.remove('show'), 4000);
+}
+
+// ============ DND (best effort) ============
+function requestDND() {
+  // Web API doesn't have DND, but we can at least note it
+  if (navigator.vibrate) navigator.vibrate(0);
+}
+function releaseDND() {}
+
+function showInstallGuide() {
+  document.getElementById('installModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function hideInstallGuide() {
+  document.getElementById('installModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ============ CONFETTI ============
+function launchConfetti() {
+  const colors = ['#2ec4b6','#a8e6df','#e8c97a','#7fb8b2'];
+  for (let i=0; i<30; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random()*100+'vw';
+    el.style.top = '-10px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDelay = Math.random()*1+'s';
+    el.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2500);
+  }
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  createParticles();
+  updateHome();
+  initRhythmUI();
+  initSoundModeUI();
+  initNameUI();
+  scheduleNotifications();
+  requestNotifPermission();
+
+  // Simulate a notification after 3s for demo
+  setTimeout(() => {
+    const h = new Date().getHours();
+    let session = h < 12 ? 'du matin' : h < 16 ? 'de midi' : 'du soir';
+    showNotifMsg(`🌊 Séance ${session}`, 'Prends 5 minutes pour toi maintenant');
+  }, 3000);
+});
+</script>
+</body>
+</html>
