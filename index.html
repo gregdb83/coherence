@@ -9,7 +9,6 @@
 <meta name="apple-mobile-web-app-title" content="Cohérence">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a1628">
-<link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxyZWN0IHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIHJ4PSIyMjAiIGZpbGw9IiMwYTE2MjgiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjE4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmVjNGI2IiBzdHJva2Utd2lkdGg9IjEyIiBvcGFjaXR5PSIwLjMiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjEzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmVjNGI2IiBzdHJva2Utd2lkdGg9IjEyIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjgwIiBmaWxsPSIjMWE3YTZlIiBvcGFjaXR5PSIwLjkiLz48Y2lyY2xlIGN4PSI1MTIiIGN5PSI0NDAiIHI9IjQ1IiBmaWxsPSIjMmVjNGI2Ii8+PHRleHQgeD0iNTEyIiB5PSI3MjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSI4OCIgZm9udC13ZWlnaHQ9IjMwMCIgZmlsbD0iI2U4ZjRmMiIgbGV0dGVyLXNwYWNpbmc9IjQiPkNvaMOpcmVuY2U8L3RleHQ+PHRleHQgeD0iNTEyIiB5PSI4MTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSI2MCIgZmlsbD0iI2U4Yzk3YSIgbGV0dGVyLXNwYWNpbmc9IjgiPjM2NTwvdGV4dD48L3N2Zz4=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1080,24 +1079,48 @@ function toggleExercise() {
   }
 }
 
+// ============ WAKE LOCK ============
+let wakeLock = null;
+
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+    }
+  } catch(e) {}
+}
+
+function releaseWakeLock() {
+  try {
+    if (wakeLock) { wakeLock.release(); wakeLock = null; }
+  } catch(e) {}
+}
+
+// Re-acquire wake lock if page becomes visible again (e.g. after tab switch)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && exerciseRunning) requestWakeLock();
+});
+
 function startExercise() {
   exerciseRunning = true;
   document.getElementById('sessionTimer').style.display = 'block';
   document.getElementById('startPauseBtn').textContent = '⏸ Pause';
-  // DND attempt
   if (state.settings.dnd) requestDND();
+  requestWakeLock();
   runCycle();
   exerciseInterval = setInterval(tick, 1000);
 }
 function pauseExercise() {
   exerciseRunning = false; exercisePaused = true;
   clearInterval(exerciseInterval);
+  releaseWakeLock();
   document.getElementById('startPauseBtn').textContent = '▶ Reprendre';
   document.getElementById('phaseLabel').textContent = 'Pause';
 }
 function resumeExercise() {
   exerciseRunning = true; exercisePaused = false;
   document.getElementById('startPauseBtn').textContent = '⏸ Pause';
+  requestWakeLock();
   exerciseInterval = setInterval(tick, 1000);
 }
 
@@ -1152,6 +1175,7 @@ function runCycle() {
 function endExercise() {
   clearInterval(exerciseInterval);
   exerciseRunning = false;
+  releaseWakeLock();
   markSession(currentSessionIdx >= 0 ? currentSessionIdx : 0);
   if (state.settings.dnd) releaseDND();
   launchConfetti();
