@@ -98,7 +98,24 @@
   .greeting-main { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--text); }
   .greeting-main em { color: var(--aqua); font-style: italic; }
 
-  /* STREAK */
+  /* DAY COMPLETE */
+  .day-complete-banner {
+    width: 100%; background: linear-gradient(135deg, rgba(26,122,110,0.3), rgba(232,201,122,0.2));
+    border: 1px solid rgba(232,201,122,0.4); border-radius: 20px;
+    padding: 16px 24px; text-align: center; animation: fadeIn 0.6s ease;
+  }
+  .day-complete-banner .banner-icon { font-size: 28px; margin-bottom: 4px; }
+  .day-complete-banner .banner-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); }
+  .day-complete-banner .banner-sub { font-size: 12px; color: var(--subtext); margin-top: 4px; }
+
+  .ocean-bg.day-done {
+    background: radial-gradient(ellipse at 20% 80%, #0d4a3a 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, #1a3d2a 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, #0d2b45 0%, #060f1a 100%);
+    transition: background 1s ease;
+  }
+
+  /* SESSIONS */
   .streak-card {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(46,196,182,0.15);
     border-radius: 20px; padding: 20px 32px; text-align: center;
@@ -295,16 +312,23 @@
   .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 12px; }
   .cal-day-label { font-size: 9px; color: var(--subtext); text-align: center; text-transform: uppercase; }
   .cal-cell {
-    aspect-ratio: 1; border-radius: 6px;
+    aspect-ratio: 1; border-radius: 8px;
     background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-    position: relative; cursor: default;
+    position: relative; cursor: default; transition: all 0.3s;
   }
-  .cal-cell.has-1 { background: rgba(46,196,182,0.15); border-color: rgba(46,196,182,0.2); }
-  .cal-cell.has-2 { background: rgba(46,196,182,0.30); border-color: rgba(46,196,182,0.35); }
-  .cal-cell.has-3 { background: rgba(46,196,182,0.5); border-color: rgba(46,196,182,0.6); }
-  .cal-cell.today { border-color: var(--gold) !important; box-shadow: 0 0 8px rgba(232,201,122,0.3); }
-  .cal-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--deep); }
+  .cal-cell.has-1 { background: rgba(46,196,182,0.20); border-color: rgba(46,196,182,0.35); }
+  .cal-cell.has-2 { background: rgba(26,122,110,0.55); border-color: rgba(46,196,182,0.6); }
+  .cal-cell.has-3 {
+    background: linear-gradient(135deg, #1a7a6e, #e8c97a);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(232,201,122,0.4);
+  }
+  .cal-cell.has-3 .cal-num { color: #0a1628 !important; font-weight: 700; }
+  .cal-cell.has-3 .cal-score { color: #0a1628 !important; }
+  .cal-cell.today { border-color: var(--gold) !important; box-shadow: 0 0 10px rgba(232,201,122,0.4); }
+  .cal-num { font-size: 10px; color: var(--subtext); line-height: 1; }
+  .cal-score { font-size: 9px; letter-spacing: 0.5px; color: var(--aqua); line-height: 1; margin-top: 1px; }
 
   /* SETTINGS */
   .settings-content { flex: 1; padding: 24px; overflow-y: auto; }
@@ -443,7 +467,11 @@
         </div>
       </div>
 
-      <div class="motivational" id="motivational">"Chaque souffle est un nouveau départ."</div>
+      <div id="dayCompleteBanner" style="display:none;" class="day-complete-banner">
+        <div class="banner-icon">🌟</div>
+        <div class="banner-title">Journée complète !</div>
+        <div class="banner-sub" id="bannerSub">3 séances · Tu es au top aujourd'hui</div>
+      </div>
 
       <button class="start-btn" onclick="goToExercise()">✦ Commencer maintenant</button>
     </div>
@@ -658,31 +686,6 @@
         </div>
         <div id="previewZone" style="display:none;margin-top:8px;text-align:center;">
           <button onclick="previewSound()" style="background:rgba(46,196,182,0.1);border:1px solid rgba(46,196,182,0.3);border-radius:8px;padding:8px 20px;color:var(--aqua);cursor:pointer;font-size:13px;">▶ Tester le son</button>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <div class="settings-section-title">Rappels quotidiens</div>
-        <div class="settings-item">
-          <div>
-            <div class="settings-item-label">🌅 Matin</div>
-            <div class="settings-item-sub">Première séance</div>
-          </div>
-          <input type="time" class="time-input" id="time0" value="08:00" onchange="saveTimes()">
-        </div>
-        <div class="settings-item">
-          <div>
-            <div class="settings-item-label">☀️ Midi</div>
-            <div class="settings-item-sub">Deuxième séance</div>
-          </div>
-          <input type="time" class="time-input" id="time1" value="12:00" onchange="saveTimes()">
-        </div>
-        <div class="settings-item">
-          <div>
-            <div class="settings-item-label">🌙 Soir</div>
-            <div class="settings-item-sub">Troisième séance</div>
-          </div>
-          <input type="time" class="time-input" id="time2" value="18:00" onchange="saveTimes()">
         </div>
       </div>
 
@@ -968,6 +971,27 @@ function updateHome() {
     }
   });
 
+  // Day complete visuals
+  const banner = document.getElementById('dayCompleteBanner');
+  const bg = document.querySelector('.ocean-bg');
+  const motiv = document.getElementById('motivational');
+  const completeMsgs = [
+    'Tu as pris soin de toi 3 fois aujourd\'hui. Bravo !',
+    'Journée parfaite. Ton cœur te remercie !',
+    '3/3 — la régularité, c\'est ton superpouvoir.',
+    'Mission accomplie ! Reviens demain pour continuer la série.',
+  ];
+  if (done >= 3) {
+    banner.style.display = 'block';
+    document.getElementById('bannerSub').textContent = completeMsgs[Math.floor(Math.random()*completeMsgs.length)];
+    if (bg) bg.style.background = 'radial-gradient(ellipse at 20% 80%, #0d4a3a 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, #1a3d2a 0%, transparent 60%), radial-gradient(ellipse at 50% 50%, #0d2b45 0%, #060f1a 100%)';
+    if (motiv) motiv.style.display = 'none';
+  } else {
+    banner.style.display = 'none';
+    if (bg) bg.style.background = '';
+    if (motiv) motiv.style.display = 'block';
+  }
+
   // streak
   const streak = computeStreak();
   document.getElementById('streakCount').textContent = streak;
@@ -977,11 +1001,9 @@ function updateHome() {
   const h = new Date().getHours();
   let greet = h < 12 ? `Belle matinée, <em>${name}</em>` : h < 18 ? `Bon après-midi, <em>${name}</em>` : `Bonne soirée, <em>${name}</em>`;
   document.getElementById('greetingMain').innerHTML = greet;
-  const greetSub = document.getElementById('greetingSub');
-  if (greetSub) greetSub.textContent = `Bienvenue, ${name}`;
 
   // quote
-  document.getElementById('motivational').textContent = quotes[Math.floor(Math.random()*quotes.length)];
+  if (motiv && done < 3) document.getElementById('motivational').textContent = quotes[Math.floor(Math.random()*quotes.length)];
 }
 
 function computeStreak() {
@@ -1578,8 +1600,8 @@ function buildCalendar() {
     else if (done===2) cls += ' has-2';
     else if (done===1) cls += ' has-1';
     if (isToday) cls += ' today';
-    const dots = done>0 ? Array(done).fill('<div class="cal-dot"></div>').join('') : '';
-    html += `<div class="${cls}"><span style="font-size:9px;color:var(--subtext)">${d}</span>${dots}</div>`;
+    const score = done > 0 ? `<div class="cal-score">${done === 3 ? '★' : done + '/3'}</div>` : '';
+    html += `<div class="${cls}"><span class="cal-num">${d}</span>${score}</div>`;
   }
   document.getElementById('calGrid').innerHTML = html;
 }
@@ -1624,15 +1646,6 @@ function toggleVib() {
   state.settings.vib = !state.settings.vib;
   document.getElementById('vibToggle').classList.toggle('on', state.settings.vib);
   saveState();
-}
-function saveTimes() {
-  state.settings.times = [
-    document.getElementById('time0').value,
-    document.getElementById('time1').value,
-    document.getElementById('time2').value,
-  ];
-  saveState();
-  scheduleNotifications();
 }
 function resetData() {
   if (confirm('Effacer toutes les données ? Cette action est irréversible.')) {
