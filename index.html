@@ -364,19 +364,6 @@
     font-size: 14px; font-family: 'DM Sans', sans-serif; cursor: pointer;
   }
 
-  /* NOTIFICATION BANNER */
-  .notif-banner {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
-    background: linear-gradient(135deg, var(--ocean), var(--teal));
-    border: 1px solid rgba(46,196,182,0.4); border-radius: 16px;
-    padding: 14px 24px; min-width: 280px; text-align: center;
-    z-index: 100; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-  .notif-banner.show { transform: translateX(-50%) translateY(0); }
-  .notif-title { font-size: 14px; font-weight: 500; color: var(--aqua); margin-bottom: 2px; }
-  .notif-body { font-size: 12px; color: var(--subtext); }
-
   /* BOTTOM TABS */
   .bottom-tabs {
     display: flex; border-top: 1px solid rgba(46,196,182,0.08);
@@ -415,11 +402,6 @@
 <div class="wave"></div>
 <div class="wave"></div>
 
-<div class="notif-banner" id="notifBanner">
-  <div class="notif-title">🌊 Moment de respirer</div>
-  <div class="notif-body" id="notifBody">Ta séance de cohérence t'attend</div>
-</div>
-
 <div id="app">
 
   <!-- HOME -->
@@ -427,12 +409,10 @@
     <nav>
       <div class="logo">Cohér<span>ence</span></div>
       <div class="nav-icons">
-        <button class="nav-icon" onclick="showNotif()">🔔</button>
       </div>
     </nav>
     <div class="home-content fade-in">
       <div class="greeting">
-        <div class="greeting-sub" id="greetingSub">Bienvenue, Greg</div>
         <div class="greeting-main" id="greetingMain">Prends soin de <em>toi</em></div>
       </div>
 
@@ -761,17 +741,6 @@
       </div>
 
       <div class="settings-section">
-        <div class="settings-section-title">Notifications</div>
-        <div class="settings-item">
-          <div>
-            <div class="settings-item-label">🔔 Rappels activés</div>
-            <div class="settings-item-sub">Notifications à 8h, 12h, 18h</div>
-          </div>
-          <button class="toggle on" id="notifToggle" onclick="toggleNotif()"></button>
-        </div>
-      </div>
-
-      <div class="settings-section">
         <div class="settings-section-title">Installer l'app</div>
         <div class="settings-item" onclick="showInstallGuide()" style="cursor:pointer;">
           <div>
@@ -911,7 +880,7 @@
 const STORAGE_KEY = 'coherence365_v2';
 let state = {
   sessions: {}, // { 'YYYY-MM-DD': [0,1,2] done flags }
-  settings: { dnd: true, sound: true, vib: false, notif: true,
+  settings: { dnd: true, sound: true, vib: false,
                times: ['08:00','12:00','18:00'], rhythm: '4-6',
                soundMode: 'tones', userName: 'Greg' }
 };
@@ -1656,12 +1625,6 @@ function toggleVib() {
   document.getElementById('vibToggle').classList.toggle('on', state.settings.vib);
   saveState();
 }
-function toggleNotif() {
-  state.settings.notif = !state.settings.notif;
-  document.getElementById('notifToggle').classList.toggle('on', state.settings.notif);
-  if (state.settings.notif) requestNotifPermission();
-  saveState();
-}
 function saveTimes() {
   state.settings.times = [
     document.getElementById('time0').value,
@@ -1681,35 +1644,9 @@ function resetData() {
 }
 
 // ============ NOTIFICATIONS ============
-function requestNotifPermission() {
-  if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission();
-  }
-}
-function scheduleNotifications() {
-  // In a real app we'd use ServiceWorker. Here we use in-tab timers as demo.
-  const times = state.settings.times;
-  times.forEach((t, i) => {
-    const [h,m] = t.split(':').map(Number);
-    const now = new Date();
-    const target = new Date(); target.setHours(h,m,0,0);
-    if (target <= now) target.setDate(target.getDate()+1);
-    const delay = target-now;
-    setTimeout(() => {
-      if (state.settings.notif) showNotif(i);
-    }, delay);
-  });
-}
-function showNotif(idx) {
-  const labels = ['du matin','de midi','du soir'];
-  showNotifMsg(`🌊 Séance ${labels[idx||0]}`, 'Ta cohérence cardiaque t\'attend');
-}
 function showNotifMsg(title, body) {
-  document.querySelector('.notif-banner .notif-title').textContent = title;
-  document.getElementById('notifBody').textContent = body;
-  const b = document.getElementById('notifBanner');
-  b.classList.add('show');
-  setTimeout(() => b.classList.remove('show'), 4000);
+  // notifications removed — no-op kept for upload sound confirmation
+  console.log(title, body);
 }
 
 // ============ DND (best effort) ============
@@ -1752,15 +1689,6 @@ window.addEventListener('DOMContentLoaded', () => {
   initRhythmUI();
   initSoundModeUI();
   initNameUI();
-  scheduleNotifications();
-  requestNotifPermission();
-
-  // Simulate a notification after 3s for demo
-  setTimeout(() => {
-    const h = new Date().getHours();
-    let session = h < 12 ? 'du matin' : h < 16 ? 'de midi' : 'du soir';
-    showNotifMsg(`🌊 Séance ${session}`, 'Prends 5 minutes pour toi maintenant');
-  }, 3000);
 });
 </script>
 </body>
